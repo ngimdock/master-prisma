@@ -14,6 +14,7 @@ model User {
   id      String               @id @default(uuid())
   name    String
   email   String               @unique
+  age     Int
   isAdmin Boolean
   address Json
   test    Unsupported("hello")
@@ -22,6 +23,9 @@ model User {
   favoritePost Post[] @relation("favoritePost")
 
   preference UserPreference?
+
+  @@unique([name, age])
+  @@index([email, name])
 }
 
 model UserPreference {
@@ -33,10 +37,11 @@ model UserPreference {
 }
 
 model Post {
-  id        String   @id @default(uuid())
-  rating    Float
-  createdAd DateTime
-  updatedAd DateTime
+  id            String   @id @default(uuid())
+  title         String
+  averageRating Float
+  createdAd     DateTime @default(now())
+  updatedAd     DateTime @updatedAt
 
   authorId String
   author   User   @relation("writtenPost", fields: [authorId], references: [id])
@@ -49,7 +54,7 @@ model Post {
 
 model Category {
   id   String @id @default(uuid())
-  name String
+  name String @unique
 
   posts Post[]
 }
