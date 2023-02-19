@@ -11,15 +11,20 @@ datasource db {
 }
 
 model User {
-  id        String               @id @default(uuid())
-  name      String
-  email     String
-  isAdmin   Boolean
-  prefenses Json
-  test      Unsupported("hello")
+  id      String               @id @default(uuid())
+  name    String
+  email   String
+  isAdmin Boolean
+  address Json
+  test    Unsupported("hello")
 
   writenPost   Post[] @relation("writtenPost")
   favoritePost Post[] @relation("favoritePost")
+}
+
+model UserPreference {
+  id           String  @id @default(uuid())
+  emailUpdates Boolean
 }
 
 model Post {
@@ -33,4 +38,13 @@ model Post {
 
   favoriteById String?
   favoriteBy   User?   @relation("favoritePost", fields: [favoriteById], references: [id])
+
+  categories Category[]
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String
+
+  posts Post[]
 }
