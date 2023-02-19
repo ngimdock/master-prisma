@@ -13,18 +13,23 @@ datasource db {
 model User {
   id      String               @id @default(uuid())
   name    String
-  email   String
+  email   String               @unique
   isAdmin Boolean
   address Json
   test    Unsupported("hello")
 
   writenPost   Post[] @relation("writtenPost")
   favoritePost Post[] @relation("favoritePost")
+
+  preference UserPreference?
 }
 
 model UserPreference {
   id           String  @id @default(uuid())
   emailUpdates Boolean
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Post {
