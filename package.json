@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
-    "db:dev:start": "docker compose start up -d",
-    "db:dev:stop": "docker compose start down",
-    "db:dev:restart": "yarn db:dev:stop && db:dev:start"
+    "start:dev": "nodemon server.ts",
+    "db:dev:start": "docker compose up -d",
+    "db:dev:stop": "docker compose down",
+    "db:dev:restart": "yarn db:dev:stop && yarn db:dev:start"
   },
   "keywords": [],
   "author": "",

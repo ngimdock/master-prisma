@@ -10,14 +10,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String               @id @default(uuid())
+  name      String
+  email     String
+  isAdmin   Boolean
+  prefenses Json
+  test      Unsupported("hello")
 
-model User  {
-  id       Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  prefences Json
+  writenPost   Post[] @relation("writtenPost")
+  favoritePost Post[] @relation("favoritePost")
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  rating    Float
+  createdAd DateTime
+  updatedAd DateTime
+
+  authorId String
+  author   User   @relation("writtenPost", fields: [authorId], references: [id])
+
+  favoriteById String?
+  favoriteBy   User?   @relation("favoritePost", fields: [favoriteById], references: [id])
 }
