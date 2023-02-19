@@ -11,13 +11,14 @@ datasource db {
 }
 
 model User {
-  id      String               @id @default(uuid())
-  name    String
-  email   String               @unique
-  age     Int
-  isAdmin Boolean
-  address Json
-  test    Unsupported("hello")
+  id           String  @id @default(uuid())
+  name         String
+  email        String  @unique
+  emailIsValid Boolean @default(false)
+  age          Int
+
+  address Json?
+  role    Role            @default(USER)
 
   writenPost   Post[] @relation("writtenPost")
   favoritePost Post[] @relation("favoritePost")
@@ -33,7 +34,7 @@ model UserPreference {
   emailUpdates Boolean
 
   userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Post {
@@ -57,4 +58,9 @@ model Category {
   name String @unique
 
   posts Post[]
+}
+
+enum Role {
+  USER
+  ADMIn
 }
