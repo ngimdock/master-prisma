@@ -16,15 +16,36 @@ const USERS = [
 
 async function main() {
   const users = await prisma.user.findMany({
-    orderBy: {
-      name: "asc",
+    where: {
+      preference: {
+        emailUpdates: true,
+      },
+
+      writenPost: {
+        every: {
+          title: "test",
+        },
+      },
     },
-    skip: 2,
-    take: 3,
-    distinct: ["name"],
+
+    orderBy: { name: "asc" },
+    include: {
+      preference: true,
+    },
+  });
+
+  const posts = await prisma.post.findMany({
+    where: {
+      author: {
+        is: {
+          age: 23,
+        },
+      },
+    },
   });
 
   console.log({ users });
+  console.log({ posts });
 }
 
 main()
