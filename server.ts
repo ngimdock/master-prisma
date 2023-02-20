@@ -15,37 +15,25 @@ const USERS = [
 ];
 
 async function main() {
-  const users = await prisma.user.findMany({
+  const user = await prisma.user.update({
     where: {
-      preference: {
-        emailUpdates: true,
-      },
+      email: "ngimdock@gmail.com",
+    },
 
-      writenPost: {
-        every: {
-          title: "test",
+    data: {
+      preference: {
+        create: {
+          emailUpdates: true,
         },
       },
     },
 
-    orderBy: { name: "asc" },
     include: {
       preference: true,
     },
   });
 
-  const posts = await prisma.post.findMany({
-    where: {
-      author: {
-        is: {
-          age: 23,
-        },
-      },
-    },
-  });
-
-  console.log({ users });
-  console.log({ posts });
+  console.log({ user });
 }
 
 main()
